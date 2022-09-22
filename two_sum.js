@@ -15,3 +15,23 @@
     }
     
 };
+
+// using hashes
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+ var twoSumWithHashing = function(nums, target) {
+    let hashObj = {};
+    
+    for (i = 0; i < nums.length; i++){
+        let j = hashObj[target-nums[i]];
+        if(j != undefined){
+            return [j,i];
+        }
+        hashObj[nums[i]] = i;
+    
+    }
+    
+};

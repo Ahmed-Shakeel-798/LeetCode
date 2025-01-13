@@ -30,56 +30,22 @@ var numEnclaves = function(grid) {
 
     let visitedMap = new Set();
 
-    // for top row.
-    let y = 0;
-    for(let x in grid[y]){
-        if(grid[y][x] === 0 || visitedMap.has(x + ',' + y)) {
-            continue;
-        }
-        visitedMap = explore(Number(x), Number(y), grid, visitedMap);
-    }
+    let newVisitedMap = new Set();
 
-    // for bottom row.
-    y = grid.length-1;
-    for(let x in grid[y]){
-        if(grid[y][x] === 0 || visitedMap.has(x + ',' + y)) {
-            continue;
-        }
-        visitedMap = explore(Number(x), Number(y), grid, visitedMap);
-    }
-
-    // for left most column.
-    let x = 0
-    y = 0;
-    for(let y in grid){
-        if(grid[y][x] === 0 || visitedMap.has(x + ',' + y)) {
-            continue;
-        }
-        visitedMap = explore(Number(x), Number(y), grid, visitedMap);
-    }
-
-    // for right most column.
-    x = grid[0].length-1;
-    y = 0;
-    for(let y in grid){
-        if(grid[y][x] === 0 || visitedMap.has(x + ',' + y)) {
-            continue;
-        }
-        visitedMap = explore(Number(x), Number(y), grid, visitedMap);
-    }
-
-    let enclaves = 0;
-    // except top and bottom row
-    for(let y = 1; y < grid.length-1; y++){
-        // excpet left most and right most column.
-        for(let x = 1; x < grid[0].length-1; x++) {
-            if(grid[y][x] === 1 && !visitedMap.has(x + ',' + y)) {
-                enclaves+=1;
+    let landCount = 0;
+    for(let y in grid) {
+        for(let x in grid[0]) {
+            if(grid[y][x] == 1) {
+                landCount+=1;
+                // run dfs if edge
+                if(x==0 || x==grid[0].length-1 || y==0 || y==grid.length-1) {
+                    newVisitedMap = explore(Number(x), Number(y), grid, newVisitedMap);
+                }
             }
         }
     }
 
-    return enclaves;
+    return landCount - [...newVisitedMap].length;
 };
 
 const mainArray = [[0,0,0,1,1,1,0,1,0,0],[1,1,0,0,0,1,0,1,1,1],[0,0,0,1,1,1,0,1,0,0],[0,1,1,0,0,0,1,0,1,0],[0,1,1,1,1,1,0,0,1,0],[0,0,1,0,1,1,1,1,0,1],[0,1,1,0,0,0,1,1,1,1],[0,0,1,0,0,1,0,1,0,1],[1,0,1,0,1,1,0,0,0,0],[0,0,0,0,1,1,0,0,0,1]];
